@@ -1,0 +1,226 @@
+{
+	"info": {
+		"_postman_id": "748e03f4-baa2-4752-b120-ab86c17eff86",
+		"name": "Presupuesto v1.1",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "13451936"
+	},
+	"item": [
+		{
+			"name": "Crear Presupuesto",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"pm.test(\"Response contains correct id\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.id).to.eql(pm.environment.get('presupuestoId'));",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\": {{presupuestoId}},\r\n  \"fechaInicio\": \"{{fechaInicio}}\",\r\n  \"fechaFin\": \"{{fechaFin}}\",\r\n  \"montoPresupuestado\": {{montoPresupuestado}},\r\n  \"gastos\": [\r\n    {\r\n      \"id\": {{gastoId}},\r\n      \"fecha\": \"{{fechaGasto}}\",\r\n      \"monto\": {{montoGasto}},\r\n      \"descripcion\": \"{{descripcionGasto}}\"\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/presupuestos",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"presupuestos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener Lista de Presupuestos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response is an array\", function () {",
+							"    pm.response.to.be.json; // Ensure response is JSON",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.be.an('array');",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/presupuestos",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"presupuestos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener Total de Gastos por Presupuesto ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response contains total amount\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property('totalGastos');",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/presupuestos/total-gastos/{{presupuestoId}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"presupuestos",
+						"total-gastos",
+						"{{presupuestoId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Agregar Gasto a Presupuesto",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response contains updated budget\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.gastos).to.be.an('array').that.includes({",
+							"        id: pm.environment.get('gastoId'),",
+							"        monto: pm.environment.get('montoGasto')",
+							"    });",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\": {{gastoId}},\r\n  \"fecha\": \"{{fechaGasto}}\",\r\n  \"monto\": {{montoGasto}},\r\n  \"descripcion\": \"{{descripcionGasto}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/presupuestos/agregar-gasto/{{presupuestoId}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"presupuestos",
+						"agregar-gasto",
+						"{{presupuestoId}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "presupuestoId",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "fechaInicio",
+			"value": "2022-03-10",
+			"type": "string"
+		},
+		{
+			"key": "fechaFin",
+			"value": "2022-03-10",
+			"type": "string"
+		},
+		{
+			"key": "montoPresupuestado",
+			"value": "0",
+			"type": "string"
+		},
+		{
+			"key": "gastoId",
+			"value": "0",
+			"type": "string"
+		},
+		{
+			"key": "fechaGasto",
+			"value": "2022-03-10",
+			"type": "string"
+		},
+		{
+			"key": "montoGasto",
+			"value": "5000",
+			"type": "string"
+		},
+		{
+			"key": "descripcionGasto",
+			"value": "string",
+			"type": "string"
+		}
+	]
+}
