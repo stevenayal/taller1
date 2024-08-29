@@ -1,4 +1,10 @@
+# Tareas
+[Tarea 1](tarea1.md)
+[Tarea 2](tarea2.md)
+
+
 # taller1
+
 
 This project uses Quarkus, the Supersonic Subatomic Java Framework.
 

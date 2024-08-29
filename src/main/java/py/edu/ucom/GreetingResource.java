@@ -1,4 +1,4 @@
-package py.edu.com;
+package py.edu.ucom;
 
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
@@ -6,8 +6,7 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 
-
-@Path("/recursos-basicos")
+@Path("/greeting")  // Cambié el path base para evitar conflicto
 public class GreetingResource {
 
     @GET
